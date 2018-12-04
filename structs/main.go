@@ -27,12 +27,18 @@ func main() {
 
 	jim.updateFirstName("jimmy")
 	jim.print()
+	jim.updateLastName("Goodman")
+	jim.print()
 }
 
 func (pointerToPerson *person) updateFirstName(newFirstName string) {
 	(*pointerToPerson).firstName = newFirstName
 }
 
+func (p *person) updateLastName(newLastName string) {
+	p.lastName = newLastName
+}
+
 func (p person) print() {
-	fmt.Printf("%+v", p)
+	fmt.Printf("%+v\n", p)
 }
