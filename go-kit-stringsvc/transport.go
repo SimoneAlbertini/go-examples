@@ -27,7 +27,7 @@ type countResponse struct {
 	V int `json:"v"`
 }
 
-// Create endpoint
+// Create endpoint (look for type Endpoint in go-kit!)
 func makeUppercaseEndpoint(service stringService) endpoint.Endpoint {
 	return func(_ context.Context, request interface{}) (interface{}, error) {
 		req := request.(uppercaseRequest)

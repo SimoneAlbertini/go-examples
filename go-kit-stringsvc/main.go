@@ -1,42 +1,47 @@
 package main
 
 import (
-	"errors"
-	"log"
+	"context"
 	"net/http"
-	"strings"
+	"os"
 
+	"github.com/go-kit/kit/endpoint"
+
+	"github.com/go-kit/kit/log"
 	httptransport "github.com/go-kit/kit/transport/http"
 )
 
-func (stringService) Uppercase(s string) (string, error) {
-	if s == "" {
-		return "", errors.New("string is empty")
+func loggingMiddleware(logger log.Logger) endpoint.Middleware {
+	return func(next endpoint.Endpoint) endpoint.Endpoint {
+		return func(ctx context.Context, request interface{}) (interface{}, error) {
+			logger.Log("msg", "calling endpoint")
+			defer logger.Log("msg", "calling endpoint")
+			return next(ctx, request)
+		}
 	}
-
-	return strings.ToUpper(s), nil
-}
-
-func (stringService) Count(s string) int {
-	return len(s)
 }
 
 func main() {
+	logger := log.NewLogfmtLogger(os.Stdout)
 	strService := stringService{}
 
+	uppercaseEndpoint := makeUppercaseEndpoint(strService)
+	uppercaseEndpoint = loggingMiddleware(log.With(logger, "method", "uppercase"))(uppercaseEndpoint)
 	uppercaseHandler := httptransport.NewServer(
-		makeUppercaseEndpoint(strService),
+		uppercaseEndpoint,
 		decodeUppercaseRequest,
 		encodeResponse,
 	)
 
+	countEndpoint := makeCountEndpoint(strService)
+	countEndpoint = loggingMiddleware(log.With(logger, "method", "count"))(countEndpoint)
 	countHandler := httptransport.NewServer(
-		makeCountEndpoint(strService),
+		countEndpoint,
 		decodeCountRequest,
 		encodeResponse,
 	)
 
 	http.Handle("/uppercase", uppercaseHandler)
 	http.Handle("/count", countHandler)
-	log.Fatal(http.ListenAndServe(":8000", nil))
+	http.ListenAndServe(":8000", nil)
 }
