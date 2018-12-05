@@ -28,7 +28,7 @@ type countResponse struct {
 }
 
 // Create endpoint (look for type Endpoint in go-kit!)
-func makeUppercaseEndpoint(service stringService) endpoint.Endpoint {
+func makeUppercaseEndpoint(service StringService) endpoint.Endpoint {
 	return func(_ context.Context, request interface{}) (interface{}, error) {
 		req := request.(uppercaseRequest)
 		v, err := service.Uppercase(req.S)
@@ -39,7 +39,7 @@ func makeUppercaseEndpoint(service stringService) endpoint.Endpoint {
 	}
 }
 
-func makeCountEndpoint(service stringService) endpoint.Endpoint {
+func makeCountEndpoint(service StringService) endpoint.Endpoint {
 	return func(_ context.Context, request interface{}) (interface{}, error) {
 		req := request.(countRequest)
 		v := service.Count(req.S)
