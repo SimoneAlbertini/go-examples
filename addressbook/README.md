@@ -1,4 +1,7 @@
 #Example usage
+## Run
+
+> docker-compose up --build
 
 ## Ask for a contact by ID
 
