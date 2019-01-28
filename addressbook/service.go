@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/go-kit/kit/log"
 	"github.com/gomodule/redigo/redis"
-	"os"
 )
 
 // AddressbookService is basic
@@ -11,7 +10,9 @@ type AddressbookService interface {
 	LookFor(name string, lastName string) (contact, error)
 }
 
-type addressbookService struct{}
+type addressbookService struct {
+	logger log.Logger
+}
 
 type contact struct {
 	name        string
@@ -20,9 +21,7 @@ type contact struct {
 	phoneNumber string
 }
 
-func redisDummyAction() {
-	logger := log.NewLogfmtLogger(os.Stdout)
-
+func redisDummyAction(logger log.Logger) {
 	c, err := redis.Dial("tcp", "redis:6379")
 	if err != nil {
 		logger.Log("msg", "Error conntecting to redis", "err", err.Error())
@@ -36,9 +35,9 @@ func redisDummyAction() {
 	logger.Log("get_ret", ret)
 }
 
-func (addressbookService) LookFor(name string, lastName string) (contact, error) {
+func (a addressbookService) LookFor(name string, lastName string) (contact, error) {
 
-	redisDummyAction()
+	redisDummyAction(a.logger)
 
 	return contact{
 			name:        "Name",

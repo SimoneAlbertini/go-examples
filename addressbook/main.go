@@ -12,7 +12,9 @@ func main() {
 	logger := log.NewLogfmtLogger(os.Stdout)
 
 	var addrBookSrv AddressbookService
-	addrBookSrv = addressbookService{}
+	addrBookSrv = addressbookService{
+		logger: logger,
+	}
 	addrBookSrv = loggingMiddleware{logger: logger, next: addrBookSrv}
 
 	lookForHandler := httptransport.NewServer(
