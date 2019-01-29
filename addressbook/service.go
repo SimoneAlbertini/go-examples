@@ -1,48 +1,29 @@
 package main
 
 import (
+	"go-examples/addressbook/contact"
+	"go-examples/addressbook/storage"
+
 	"github.com/go-kit/kit/log"
-	"github.com/gomodule/redigo/redis"
 )
 
 // AddressbookService is basic
 type AddressbookService interface {
-	LookFor(name string, lastName string) (contact, error)
+	LookFor(name string, lastName string) (contact.Contact, error)
 }
 
 type addressbookService struct {
-	logger log.Logger
+	logger  log.Logger
+	storage storage.Storage
 }
 
-type contact struct {
-	name        string
-	lastName    string
-	address     string
-	phoneNumber string
-}
+func (srv addressbookService) LookFor(name string, lastName string) (contact.Contact, error) {
+	cnt, err := srv.storage.LookFor(name, lastName)
 
-func redisDummyAction(logger log.Logger) {
-	c, err := redis.Dial("tcp", "redis:6379")
 	if err != nil {
-		logger.Log("msg", "Error conntecting to redis", "err", err.Error())
+		srv.logger.Log("msg", "Error fetching entry in storage", "err", err.Error())
+		return contact.Contact{}, err
 	}
-	defer c.Close()
 
-	ret, _ := c.Do("SET", "fleet", "truck1")
-	logger.Log("set_ret", ret)
-
-	ret, _ = c.Do("GET", "fleet")
-	logger.Log("get_ret", ret)
-}
-
-func (a addressbookService) LookFor(name string, lastName string) (contact, error) {
-
-	redisDummyAction(a.logger)
-
-	return contact{
-			name:        "Name",
-			lastName:    "Lastname",
-			address:     "wonderful address",
-			phoneNumber: "123123123"},
-		nil
+	return cnt, nil
 }

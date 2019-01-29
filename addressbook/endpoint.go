@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 
 	"github.com/go-kit/kit/endpoint"
 )
@@ -9,12 +10,17 @@ import (
 func makeLookForEndpoint(service AddressbookService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(lookForRequest)
-		contact, err := service.LookFor(req.Name, req.LastName)
+		cnt, err := service.LookFor(req.Name, req.LastName)
+
 		response := lookForRespose{
-			Name:        contact.name,
-			LastName:    contact.lastName,
-			Address:     contact.address,
-			PhoneNumber: contact.phoneNumber,
+			Name:        cnt.Name,
+			LastName:    cnt.LastName,
+			Address:     cnt.Address,
+			PhoneNumber: cnt.PhoneNumber,
+		}
+
+		if cnt.IsEmpty() {
+			response.Error = errors.New("Contact Not Found").Error()
 		}
 
 		if err != nil {

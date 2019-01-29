@@ -1,6 +1,7 @@
 package main
 
 import (
+	"go-examples/addressbook/storage"
 	"net/http"
 	"os"
 
@@ -11,14 +12,15 @@ import (
 func main() {
 	logger := log.NewLogfmtLogger(os.Stdout)
 
-	var addrBookSrv AddressbookService
-	addrBookSrv = addressbookService{
-		logger: logger,
+	var addressBook AddressbookService
+	addressBook = addressbookService{
+		logger:  logger,
+		storage: storage.NewRedisStorage("tcp", "redis", "6379"),
 	}
-	addrBookSrv = loggingMiddleware{logger: logger, next: addrBookSrv}
+	addressBook = loggingMiddleware{logger: logger, next: addressBook}
 
 	lookForHandler := httptransport.NewServer(
-		makeLookForEndpoint(addrBookSrv),
+		makeLookForEndpoint(addressBook),
 		decodeLookForRequest,
 		encodeLookForRespose,
 	)
