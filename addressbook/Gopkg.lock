@@ -2,6 +2,25 @@
 
 
 [[projects]]
+  branch = "master"
+  digest = "1:7afff364b8e5e9f1085fe77ae5630b8e0f7482338a50535881aa0b433e48fb0b"
+  name = "github.com/alicebob/gopher-json"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "5a6b3ba71ee69b77cf64febf8b5a7526ca5eaef0"
+
+[[projects]]
+  digest = "1:9bfe4abf7e47f72cb471326dc012abd98dc9b85b1d288c609dd70e7081b74d54"
+  name = "github.com/alicebob/miniredis"
+  packages = [
+    ".",
+    "server",
+  ]
+  pruneopts = "UT"
+  revision = "7aa580c6d4761b53c007d24aa18e730fef3e00d4"
+  version = "v2.4.6"
+
+[[projects]]
   digest = "1:ffe9824d294da03b391f44e1ae8281281b4afc1bdaa9588c9097785e3af10cec"
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
@@ -57,35 +76,35 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:ac83cf90d08b63ad5f7e020ef480d319ae890c208f8524622a2f3136e2686b02"
-  name = "github.com/stretchr/objx"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "477a77ecc69700c7cdeb1fa9e129548e1c1c393c"
-  version = "v0.1.1"
-
-[[projects]]
-  digest = "1:79c7e1dc6789fc4329a52a4f502cb71fb5d44eccbc665f6f7907c8cc06e48441"
+  digest = "1:972c2427413d41a1e06ca4897e8528e5a1622894050e2f527b38ddf0f343f759"
   name = "github.com/stretchr/testify"
-  packages = [
-    ".",
-    "assert",
-    "http",
-    "mock",
-  ]
+  packages = ["assert"]
   pruneopts = "UT"
   revision = "ffdc059bfe9ce6a4e144ba849dbedead332c6053"
   version = "v1.3.0"
+
+[[projects]]
+  branch = "master"
+  digest = "1:bd191b42ec841c1f7eff4206367220294d91fd7fa01b33e1a2ce6084eb2c5ce2"
+  name = "github.com/yuin/gopher-lua"
+  packages = [
+    ".",
+    "ast",
+    "parse",
+    "pm",
+  ]
+  pruneopts = "UT"
+  revision = "8bfc7677f583b35a5663a9dd934c08f3b5774bbb"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/alicebob/miniredis",
     "github.com/go-kit/kit/endpoint",
     "github.com/go-kit/kit/log",
     "github.com/go-kit/kit/transport/http",
     "github.com/gomodule/redigo/redis",
-    "github.com/stretchr/testify",
     "github.com/stretchr/testify/assert",
   ]
   solver-name = "gps-cdcl"
