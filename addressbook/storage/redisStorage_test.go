@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	testJsonString = "{\"name\":\"good\"," +
+	testJSONString = "{\"name\":\"good\"," +
 		"\"lastname\":\"boy\"," +
 		"\"address\":\"such nice home\"," +
 		"\"phonenumber\":\"099-111-bork\"}"
@@ -41,7 +41,7 @@ func TestLookForExistingEntry(t *testing.T) {
 	redisMock, host, port := mockRedis()
 	defer redisMock.Close()
 
-	redisMock.Set("foo:bar", testJsonString)
+	redisMock.Set("foo:bar", testJSONString)
 
 	storage := NewRedisStorage("tcp", host, port)
 	contact, err := storage.LookFor("foo", "bar")
