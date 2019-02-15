@@ -29,5 +29,6 @@ func decodeLookForRequest(_ context.Context, r *http.Request) (interface{}, erro
 }
 
 func encodeLookForRespose(_ context.Context, rw http.ResponseWriter, response interface{}) error {
+	rw.Header().Set("Content-Type", "application/json")
 	return json.NewEncoder(rw).Encode(response)
 }
